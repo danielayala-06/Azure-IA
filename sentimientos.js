@@ -11,7 +11,7 @@ async function analizarSentimientos(){
         
         // Podemos enviar mas de un documento
         const documentoAnlizar = {
-            kind: "SentimentAnalyzsis",
+            kind: "SentimentAnalysis",
             analysisInput: {
                 documents: [
                     {
