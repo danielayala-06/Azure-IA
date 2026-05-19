@@ -47,7 +47,7 @@ async function extraerDatos(){
         // Paso 3 - Recibir respuesta
         const data = await response.json()
 
-        if(data.errors > 0)
+        if(data.results.errors.length > 0)
         {
             console.log(data.erros); return;
         }
