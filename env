@@ -1,2 +1,10 @@
-suscriptionkey = ""
-endpoint = ""
+SUB_KEY = ""
+ENDPOINT = ""
+
+RECONGNITION_API_FOUNDRY = ""
+FOUNDRY_ENPOINT = ""
+
+// Claves para implementar el modelo de IA (ChatBot - Phi-4)
+MODEL_IA_ENDPOINT= ""
+
+TOKEN_FOUNDRY = ""
