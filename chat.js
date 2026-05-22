@@ -9,14 +9,43 @@ require('dotenv').config()
 const endPointURL = process.env.MODEL_IA_ENDPOINT
 const token = process.env.TOKEN_FOUNDRY
 
-// Configuracion del LLM
-const data = {
-    model: 'Phi-4',
-    messages: [
-        {role: 'user', content: '¿Que es la memoria RAM? Dame una respuesta corta'}
-    ]
-}
+async function enviarPregunta (pregunta = ``){
+    pregunta += ', dame una respuesta corta.'
+    // Preparamos la data para enviar al endpoint
+    const configuracion = {
+        model: 'Phi-4',
+        messages: [
+            {role: 'user', content: pregunta}
+        ]
+    }
+    
+    // Hacemos el fetch al endpoint de AZURE
+    const response = await fetch(endPointURL, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': `application/json`
+        },
+        body: JSON.stringify(configuracion)
+    })
 
+    if(!response.ok){
+        console.error('No se pudo acceder al servicio')
+        return
+    }
+    
+    // Obtenemos la respuesta
+    const data = await response.json();
+    
+    if(data.choices&& data.choices.length > 0){
+        console.log(`Respuesta corta: ${data.choices[0].message.content}`)
+    }else{
+        console.log('No se encontro contenido para la respuesta')
+    }
+}
+enviarPregunta('Cuentame un chiste!')
+
+/* 
 //Consulta
 fetch(endPointURL, {
     method: 'POST',
@@ -35,4 +64,4 @@ fetch(endPointURL, {
         console.log('No se encontro contenido para la respuesta')
     }
 })
-.catch(e=> {console.error(e)})
+.catch(e=> {console.error(e)}) */
