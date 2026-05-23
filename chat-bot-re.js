@@ -1,13 +1,13 @@
 require('dotenv').config()
 
 // Datos de acceso
-const AZURE_ENDPOINT = process.env.CHATGPT_ENDPOINT
-const DEPLOYMENT_NAME = 'resident-evil-assistant'
+const AZURE_ENDPOINT = process.env.MODEL_IA_ENDPOINT
+const DEPLOYMENT_NAME = '1-nano-2025-04-14-resident-evil-assistant'
 const API_KEY = process.env.TOKEN_FOUNDRY
-//const API_VERSION = '2025-04-01-preview'
+const API_VERSION = '2025-04-01-preview'
 
 async function responderChat(pregunta = '', historial = []){
-    const url;
+    const url = `${AZURE_ENDPOINT}/openai/deployments/${DEPLOYMENT_NAME}/chat/completions?api-version=${API_VERSION}`
 
     // Preparamos el cuerpo de la peticion
     const body = {
@@ -38,6 +38,7 @@ async function responderChat(pregunta = '', historial = []){
     const data = await response.json()
     const mensaje = data.choices[0].message
 
+    
     // Esta funcion devovera un objeto
     return {
         respuesta: mensaje.content,
@@ -47,27 +48,28 @@ async function responderChat(pregunta = '', historial = []){
 
 }
 
-(()=>{
+async function test(){
     let historial = []
     // P1 - 
     console.log('-- Pregunta 1 --')
 
-    let r1 = await preguntarAzure('¿Que es Resident Evil? dame una respuesta corta', historial)
+    let r1 = await responderChat('¿Que es Resident Evil? dame una respuesta corta', historial)
     console.log(r1.respuesta)
     historial = r1.nuevo_historial
 
     // P2
     console.log('-- Pregunta 2 --')
-    let r2 = await preguntarAzure('¿Cuales son los personajes principales?', historial)
+    let r2 = await responderChat('¿Cuales son los personajes principales?', historial)
     console.log(r2.respuesta)
     historial = r2.nuevo_historial 
     
     // P3
     console.log('-- Pregunta 3 --')
-    let r3 = await preguntarAzure('¿En que juegos aparecen?', historial)
+    let r3 = await responderChat('¿En que juegos aparecen?', historial)
     console.log(r3.respuesta)
     historial = r3.nuevo_historial
 
     // Fin...
     console.log(`--- Tokens utilizados --`)
-})()
+}
+test()
